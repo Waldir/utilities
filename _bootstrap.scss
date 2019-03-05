@@ -1,51 +1,118 @@
-// spacing loop
+// spacing loop for padding & margin
 @each $i, $space in (0: 0, 1: .25rem, 2: .5rem, 3: 1rem, 4: 1.5rem, 5: 3rem) {
     // loop through margin and padding
-    @each $prop, $abbrev in (margin: m, padding: p) {
-        .#{$abbrev}-#{$i} { #{$prop}: #{$space}; }
-        .#{$abbrev}t-#{$i}, .#{$abbrev}y-#{$i} { #{$prop}-top:    #{$space}; }
-        .#{$abbrev}b-#{$i}, .#{$abbrev}y-#{$i} { #{$prop}-bottom: #{$space}; }
-        .#{$abbrev}l-#{$i}, .#{$abbrev}x-#{$i} { #{$prop}-left:   #{$space}; }
-        .#{$abbrev}r-#{$i}, .#{$abbrev}x-#{$i} { #{$prop}-right:  #{$space}; }
+    @each $key, $val in (margin: m, padding: p) {
+        .#{$val}-#{$i}{ #{$key}: #{$space}; }
+        .#{$val}t-#{$i}, .#{$val}y-#{$i}{ #{$key}-top:    #{$space}; }
+        .#{$val}b-#{$i}, .#{$val}y-#{$i}{ #{$key}-bottom: #{$space}; }
+        .#{$val}l-#{$i}, .#{$val}x-#{$i}{ #{$key}-left:   #{$space}; }
+        .#{$val}r-#{$i}, .#{$val}x-#{$i}{ #{$key}-right:  #{$space}; }
     }
 }
-// margins auto
-.m-auto{ margin: 0 auto; }
-.mt-auto, .my-auto { margin-top: auto; }
-.mr-auto, .mx-auto { margin-right: auto; }
-.mb-auto, .my-auto { margin-bottom: auto; }
-.ml-auto, .mx-auto { margin-left: auto; }
 
-// wight and height sizes
-@each $sizeN, $sizeP in (25: 25%, 50: 50%, 75: 75%, 100: 100%, auto: auto){
+// margins auto
+.m-auto{ margin: auto; }
+.mt-auto, .my-auto{ margin-top: auto; }
+.mr-auto, .mx-auto{ margin-right: auto; }
+.mb-auto, .my-auto{ margin-bottom: auto; }
+.ml-auto, .mx-auto{ margin-left: auto; }
+
+// width and height sizes
+@each $sizeN, $sizeP in (0: 0, 25: 25%, 50: 50%, 75: 75%, 100: 100%, auto: auto){
     @each $p, $a in (width: w, height: h){
-        .#{$a}-#{$sizeN} { #{$p}: #{$sizeP}; }
+        .#{$a}-#{$sizeN}{ #{$p}: #{$sizeP}; }
+        %#{$a}-#{$sizeN}{ #{$p}: #{$sizeP}; }
     }
 }
 
 // display
-.d-inline-block{ display: inline-block; }
-.d-inline      { display: inline; }
-.d-block       { display: block; }
+@each $key in (inline-block, inline, block, none){
+    .d-#{$key}{ display: #{$key}; }
+    %d-#{$key}{ display: #{$key}; }
+}
+
 // font weight
 .font-weight-normal{ font-weight: 400; }
 .font-weight-light { font-weight: 300; }
 .font-weight-bold  { font-weight: 700; }
 .font-italic       { font-style: italic; }
+
 //text align
 .text-center{ text-align: center; }
 .text-right { text-align: right; }
 .text-left  { text-align: left; }
+
 // possition
-@each $prop in (absolute, relative, sticky, static, fixed){
-    %position-#{$prop}{ position: #{$prop}; }
-    .position-#{$prop}{ position: #{$prop}; }
+@each $key in (absolute, relative, sticky, static, fixed){
+    .position-#{$key}{ position: #{$key}; }
+    %position-#{$key}{ position: #{$key}; }
 }
+
 // fixed top and bottom
-.fixed-top, .fixed-bottom{
-    position: fixed;
-    right: 0;
-    left: 0;
+.fixed-top{ @include fixed(top 0 right 0 left 0); }
+.fixed-bottom{ @include fixed(bottom 0 right 0 left 0); }
+
+// overflow
+@each $key in (visible, auto, hidden){
+    .overflow-#{$key}{ overflow: #{$key}; }
+    %overflow-#{$key}{ overflow: #{$key}; }
 }
-.fixed-top    { top: 0; }  
-.fixed-bottom { bottom: 0; }
+
+// opacity
+%opacity-1{ @include opacity(1); }
+%opacity-0{ @include opacity(0); }
+
+// cursor
+%cursor-pointer{ cursor: pointer; }
+.cursor-pointer{ cursor: pointer; }
+%cursor-default{ cursor: default; }
+.cursor-default{ cursor: default; }
+
+// pointer events
+@each $key in (none, auto, stroke, fill){
+    .pointer-events-#{$key}{ pointer-events: #{$key}; }
+    %pointer-events-#{$key}{ pointer-events: #{$key}; }
+}
+// float
+@each $key in (left, right, none){
+    .float-#{$key}{ float: #{$key}; }
+    %float-#{$key}{ float: #{$key}; }
+}
+
+// clearfix
+%clearfix{ @include clearfix(); }
+.clearfix{ @include clearfix(); }
+
+// Grid
+$grid: false !default; // Make a grid only if we want it to.
+%grid-column {
+    position: relative;
+    width: 100%;
+    padding-right: (30 / 2);
+    padding-left: (30 / 2);
+}
+
+@if $grid{
+    // cols - Mobile first
+    @for $i from 1 through 12{
+        .col-#{$i}{
+            @extend %grid-column;
+            flex: 0 0 percentage($i / 12);
+            max-width: percentage($i / 12);
+        }
+    }
+    // cols - Media queries
+    @each $key, $val in (xl: 1200, lg: 992, md: 768, sm: 576){
+        @for $i from 1 through 12{
+            .col-#{$key}-#{$i}{ @extend %grid-column; }
+        }
+        @include breakpoint($key){
+            @for $i from 1 through 12{
+                .col-#{$key}-#{$i}{
+                    flex: 0 0 percentage($i / 12);
+                    max-width: percentage($i / 12);
+                }
+            }
+        }
+    }
+}
