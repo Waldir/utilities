@@ -7,6 +7,11 @@
         .#{$val}b-#{$i}, .#{$val}y-#{$i}{ #{$key}-bottom: #{$space}; }
         .#{$val}l-#{$i}, .#{$val}x-#{$i}{ #{$key}-left:   #{$space}; }
         .#{$val}r-#{$i}, .#{$val}x-#{$i}{ #{$key}-right:  #{$space}; }
+        %#{$val}-#{$i}{ #{$key}: #{$space}; }
+        %#{$val}t-#{$i}, %#{$val}y-#{$i}{ #{$key}-top:    #{$space}; }
+        %#{$val}b-#{$i}, %#{$val}y-#{$i}{ #{$key}-bottom: #{$space}; }
+        %#{$val}l-#{$i}, %#{$val}x-#{$i}{ #{$key}-left:   #{$space}; }
+        %#{$val}r-#{$i}, %#{$val}x-#{$i}{ #{$key}-right:  #{$space}; }
     }
 }
 
@@ -37,10 +42,11 @@
 .font-weight-bold  { font-weight: 700; }
 .font-italic       { font-style: italic; }
 
-//text align
-.text-center{ text-align: center; }
-.text-right { text-align: right; }
-.text-left  { text-align: left; }
+// text align
+@each $key in (center, right, left){
+    .text-align-#{$key}{ text-align: #{$key}; }
+    %text-align-#{$key}{ text-align: #{$key}; }
+}
 
 // possition
 @each $key in (absolute, relative, sticky, static, fixed){
@@ -56,6 +62,24 @@
 @each $key in (visible, auto, hidden){
     .overflow-#{$key}{ overflow: #{$key}; }
     %overflow-#{$key}{ overflow: #{$key}; }
+}
+
+// backface-visibility
+@each $key in (visible, hidden){
+    .backface-visibility-#{$key}{ backface-visibility: #{$key}; }
+    %backface-visibility-#{$key}{ backface-visibility: #{$key}; }
+}
+
+// transform-style
+@each $key in (flat, preserve-3d){
+    .transform-style-#{$key}{ transform-style: #{$key}; }
+    %transform-style-#{$key}{ transform-style: #{$key}; }
+}
+
+// visibility
+@each $key in (visible, hidden){
+    .visibility-#{$key}{ visibility: #{$key}; }
+    %visibility-#{$key}{ visibility: #{$key}; }
 }
 
 // opacity

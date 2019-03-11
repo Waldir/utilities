@@ -117,6 +117,10 @@
   }
 }
 
+@mixin user-select($val: auto){
+  -webkit-user-select: $val;
+  user-select: $val;
+}
 //============================================================
 // brekpoint
 //============================================================
@@ -176,11 +180,13 @@
 @mixin rotate($deg)           { @include transform(rotate($deg)); }
 @mixin rotateY($deg)          { @include transform(rotateY($deg)); }
 @mixin rotateX($deg)          { @include transform(rotateX($deg)); }
+@mixin rotateZ($deg)          { @include transform(rotateZ($deg)); }
 @mixin scale3d($sx, $sy, $sz) { @include transform(scale3d($sx, $sy, $sz)); }
 @mixin translate($x, $y)      { @include transform(translate($x, $y)); }
 @mixin translateX($x)         { @include transform(translateX($x)); }
 @mixin translateY($y)         { @include transform(translateY($y)); }
 @mixin translateZ($z)         { @include transform(translateZ($z)); }
+@mixin translate3d($args...)  { @include transform(translate3d($args)); }
 
 @mixin transform-origin ($args...) {
   -webkit-transform-origin: $args;
