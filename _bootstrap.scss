@@ -31,7 +31,7 @@
 }
 
 // display
-@each $key in (inline-block, inline, block, none){
+@each $key in (inline-block, inline, block, flex, none){
     .d-#{$key}{ display: #{$key}; }
     %d-#{$key}{ display: #{$key}; }
 }
@@ -41,14 +41,19 @@
 .font-weight-light { font-weight: 300; }
 .font-weight-bold  { font-weight: 700; }
 .font-italic       { font-style: italic; }
-
+.font-small-caps   {font-variant: small-caps; }
 // text align
 @each $key in (center, right, left){
     .text-align-#{$key}{ text-align: #{$key}; }
     %text-align-#{$key}{ text-align: #{$key}; }
 }
 
-// possition
+// text transform
+@each $key in (uppercase, lowercase, capitalize){
+    .text-transform-#{$key}{ text-transform: #{$key}; }
+    %text-transform-#{$key}{ text-align: #{$key}; }
+}
+// position
 @each $key in (absolute, relative, sticky, static, fixed){
     .position-#{$key}{ position: #{$key}; }
     %position-#{$key}{ position: #{$key}; }
@@ -107,36 +112,46 @@
 %clearfix{ @include clearfix(); }
 .clearfix{ @include clearfix(); }
 
+// flex
+@each $key in (auto, start, end, center, baseline, stretch){
+  .align-self-#{$key}{ align-self:  #{$key}; }
+  %align-self-#{$key}{ align-self:  #{$key}; }
+  .align-items-#{$key}{ align-items:  #{$key}; }
+  %align-items-#{$key}{ align-items:  #{$key}; }
+}
 // Grid
 $grid: false !default; // Make a grid only if we want it to.
-%grid-column {
-    position: relative;
-    width: 100%;
-    padding-right: (30 / 2);
-    padding-left: (30 / 2);
-}
-
 @if $grid{
-    // cols - Mobile first
-    @for $i from 1 through 12{
-        .col-#{$i}{
-            @extend %grid-column;
-            flex: 0 0 percentage($i / 12);
-            max-width: percentage($i / 12);
-        }
-    }
-    // cols - Media queries
-    @each $key, $val in (xl: 1200, lg: 992, md: 768, sm: 576){
-        @for $i from 1 through 12{
-            .col-#{$key}-#{$i}{ @extend %grid-column; }
-        }
-        @include breakpoint($key){
-            @for $i from 1 through 12{
-                .col-#{$key}-#{$i}{
-                    flex: 0 0 percentage($i / 12);
-                    max-width: percentage($i / 12);
-                }
-            }
-        }
-    }
+  %grid-column{
+      position: relative;
+      width: 100%;
+  }
+  
+  .row{
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  // cols - Mobile first
+  @for $i from 1 through 12{
+      .col-#{$i}{
+          @extend %grid-column;
+          flex: 0 0 percentage($i / 12);
+          max-width: percentage($i / 12);
+      }
+  }
+  // cols - Media queries
+  @each $key, $val in (xl: 1200, lg: 992, md: 768, sm: 576){
+      @for $i from 1 through 12{
+          .col-#{$key}-#{$i}{ @extend %grid-column; }
+      }
+      @include breakpoint($key){
+          @for $i from 1 through 12{
+              .col-#{$key}-#{$i}{
+                  flex: 0 0 percentage($i / 12);
+                  max-width: percentage($i / 12);
+              }
+          }
+      }
+  }
 }

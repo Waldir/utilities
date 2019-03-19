@@ -83,4 +83,20 @@
     document.execCommand('copy');
     return false;
   };
+
+  /**
+   * the always faithful addLog
+   * @param {string} strName
+   * @param {object} objValue
+   * @param {error} error
+   */
+  if (!$.addLog) {
+    $.extend({
+      addLog: function addLog(strName, objValue, error) {
+        var newStrName = error ? '*** ERROR *** ' + strName : ' ' + strName;
+        if (objValue) console.log(new Date().toLocaleTimeString() + newStrName, objValue);
+        else console.log(new Date().toLocaleTimeString() + newStrName);
+      },
+    });
+  }
 }(jQuery));
